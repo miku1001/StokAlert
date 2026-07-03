@@ -1,0 +1,31 @@
+html, body, #root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  background-color: #000000;
+  color: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: #F59E0B;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
