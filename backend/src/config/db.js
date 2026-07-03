@@ -6,3 +6,12 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+
+
+pool.query('SELECT NOW()', (err, res) =>{
+  if (err) {
+    console.log(`Connection Error: ${err}`);
+  } else {
+    console.log('Connected Current time:', res.rows[0]);
+  }
+})
