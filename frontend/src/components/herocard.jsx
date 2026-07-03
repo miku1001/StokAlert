@@ -10,7 +10,10 @@ function HeroCard() {
           <div className="w-4 h-4 rounded-full bg-teal-600"></div>
         </div>
         <div className="flex-1 text-center">
-          <span className="text-sm border border-zinc-700 text-zinc-300 px-5 py-1 rounded-lg ">stokalerto.app / adela's store</span>
+          <span className="text-sm border border-zinc-700 text-zinc-400 px-5 py-1 rounded-lg inline-flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            <span>stokalerto.app / adela's store</span>
+          </span>
         </div>
       </div>
       
