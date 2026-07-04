@@ -1,8 +1,7 @@
 import './App.css'
-import { DesktopNav, MobileNav } from './components/navbar.jsx'
-import HeroCard from './components/herocard.jsx'
-
-
+import { Routes, Route} from 'react-router-dom'
+import Dashboard from './pages/dashboard'
+import { HeroPage } from './pages/heropage'
 
 
 
@@ -10,9 +9,10 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      <DesktopNav />
-      <MobileNav />
-      <HeroCard/>
+      <Routes>
+        <Route path="/" element={<HeroPage/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
+      </Routes>
     </div>
   );
 }

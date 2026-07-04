@@ -1,4 +1,4 @@
-const pool = require('./config/db')
+const pool = require('./config/db');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -7,10 +7,15 @@ const session = require('express-session');
 const passport = require('./config/passport');
 const authRoutes = require('./routes/auth');
 
+const productRoutes = require('./routes/product');
+
 
 const app=express()
 
-app.use(cors());
+app.use(cors(
+  {origin: 'https://localhost:5173',
+  credentials: true}
+));
 app.use(express.json());
 
 app.use(session({
@@ -18,7 +23,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    secure: false,
+    sameSite: 'lax'
   }
 }));
 
@@ -26,6 +33,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', authRoutes);
+
+app.use('/products', productRoutes)
 
 app.get('/', (req, res) => {
   res.json({

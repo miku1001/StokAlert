@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 
 // get all product
-const getProducts = (res, req) => {
+const getProducts = async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM products WHERE store_id = $1 ORDER BY created_at DESC',
@@ -11,10 +11,10 @@ const getProducts = (res, req) => {
   } catch(err) {
     res.status(500).json({message: err.message});
   }
-}
+};
 
 // create
-const createProduct = (res, req) => {
+const createProduct = async (req, res) => {
   const {sku, name, current_stock, reorder_point, unit_cost } = req.body;
   try {
     const result = await pool.query(
@@ -29,7 +29,7 @@ const createProduct = (res, req) => {
 };
 
 //update product
-const updateProduct = (res, req) => {
+const updateProduct = async (req, res) => {
   const {id} =  req.params;
   const {sku, name, current_stock, reorder_point, unit_cost } = req.body;
   try {
@@ -42,6 +42,8 @@ const updateProduct = (res, req) => {
     if (result.rows.length === 0) {
       return res.status(404).json({message:'Product Not Found'});
     }
+
+    res.json({ message: 'Product Updated', product: result.rows[0] });
   } catch(err){
     res.status(500).json({message: err.message});
   }

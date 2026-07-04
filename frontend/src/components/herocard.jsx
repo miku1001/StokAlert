@@ -1,6 +1,6 @@
 import { FiAlertTriangle, FiBookOpen, FiChevronRight, FiCloudRain, FiDollarSign, FiGift, FiMoreHorizontal, FiShoppingCart, FiZap } from 'react-icons/fi'
 
-function HeroCard() {
+export function HeroCard() {
   return (
     <div className=" mb-2 mx-4 p-4 sm:p-0 sm:mx-8 lg:mx-25 bg-[#0a0a0a] border border-zinc-700 rounded-xl overflow-hidden">
       <div className="flex items-center px-5 py-1 border-b border-zinc-700">
