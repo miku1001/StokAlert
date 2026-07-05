@@ -10,7 +10,7 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login-failed' }),
   (req, res) => {
-    res.redirect('http://localhost:5173/overview');
+    res.redirect('http://localhost:5173/dashboard');
   }
 );
 

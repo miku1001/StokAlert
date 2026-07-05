@@ -21,7 +21,7 @@ export function HeroCard() {
 
         <div className="px-1 sm:pl-13 sm:pr-3 mt-4 sm:mt-8">
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-semibold leading-tight sm:leading-none pb-4 sm:pb-8">
-            Never run out on the days <span className="text-amber-400">that pay.</span>
+            Never run out on the days <span className="text-pink-400">that pay.</span>
           </h1>
 
           <p className="text-zinc-400 max-w-xl text-sm sm:text-md leading-7 sm:leading-8 pr-0 sm:pr-10 pb-3">
@@ -29,7 +29,7 @@ export function HeroCard() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 pb-6 sm:pb-8">
-            <button className="bg-amber-400 text-black font-semibold px-6 py-3 rounded-xl hover:scale-[1.02] hover:shadow-md hover:border-amber-400 transition-all w-full sm:w-auto">
+            <button className="bg-pink-400 text-black font-semibold px-6 py-3 rounded-xl hover:scale-[1.02] hover:shadow-md hover:border-pink-400 transition-all w-full sm:w-auto">
               Try it free
             </button>
             <button className="group relative overflow-hidden border border-zinc-700 px-6 py-3 rounded-xl text-white transition-all duration-300 hover:scale-[1.05] hover:border-zinc-800 w-full sm:w-auto">
@@ -50,7 +50,7 @@ export function HeroCard() {
             </p>
 
             <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-              <div className="bg-amber-400/15 text-amber-400 rounded-2xl px-4 py-3 flex items-center justify-between font-semibold">
+              <div className="bg-pink-400/15 text-pink-400 rounded-2xl px-4 py-3 flex items-center justify-between font-semibold">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <FiDollarSign className="text-lg shrink-0" />
                   <span>Sahod week</span>
@@ -102,7 +102,7 @@ export function HeroCard() {
 
           <div className="border border-zinc-700 rounded-2xl p-2 sm:p-5 flex flex-col justify-between min-h-65 bg-[#101010]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold tracking-[0.25em] text-zinc-500 uppercase">
-              <span className="text-amber-400 bg-amber-400/10 px-3 py-1 rounded-md tracking-[0.2em] w-fit">Sahod week</span>
+              <span className="text-pink-400 bg-pink-400/10 px-3 py-1 rounded-md tracking-[0.2em] w-fit">Sahod week</span>
               <span className="text-zinc-500 normal-case tracking-normal">Fri, Apr 3</span>
             </div>
 
@@ -119,22 +119,22 @@ export function HeroCard() {
             </div>
           </div>
 
-          <div className="border border-amber-400/60 rounded-2xl p-4 sm:p-5 flex flex-col justify-between min-h-60 bg-[#251f0f]">
+          <div className="border border-pink-400/60 rounded-2xl p-4 sm:p-5 flex flex-col justify-between min-h-60 bg-pink-400/10">
             <div>
-              <div className="flex items-center gap-2 text-amber-400 font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-4">
+              <div className="flex items-center gap-2 text-pink-400 font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-4">
                 <FiAlertTriangle className="shrink-0" />
                 <span>StokAlerto caught this</span>
               </div>
 
               <p className="text-zinc-100 text-lg sm:text-xl font-semibold leading-snug max-w-md">
-                At this pace, <span className="text-orange-400">Pancit Canton</span> runs out by Thursday. Order 30 more units before Friday.
+                At this pace, <span className="text-pink-400">Pancit Canton</span> runs out by Thursday. Order 30 more units before Friday.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-6">
               <p className="text-zinc-500 text-xs sm:text-sm">8 left • sells ~11/day</p>
 
-              <button className="bg-teal-400 text-black font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform w-full sm:w-auto">
+              <button className="bg-pink-300 text-black font-semibold px-5 py-3 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform w-full sm:w-auto">
                 <FiShoppingCart className="shrink-0" />
                 <span>Order 30</span>
               </button>
