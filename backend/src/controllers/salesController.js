@@ -62,4 +62,20 @@ const getSalesByProduct = async (req, res) => {
   }
 };
 
-module.exports = { createSale, getSalesByProduct };
+const getAllSales = async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT sr.*, p.name AS product_name
+       FROM sales_records sr
+       JOIN products p ON sr.product_id = p.id
+       WHERE p.store_id = $1
+       ORDER BY sr.sale_date DESC`,
+      [req.user.store_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { createSale, getSalesByProduct, getAllSales };
