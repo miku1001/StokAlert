@@ -9,6 +9,8 @@ const authRoutes = require('./routes/auth');
 
 const productRoutes = require('./routes/product');
 
+const salesRoutes = require ('./routes/sales');
+
 
 const app=express()
 
@@ -33,8 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', authRoutes);
-
 app.use('/products', productRoutes)
+app.use('/sales', salesRoutes)
 
 app.get('/', (req, res) => {
   res.json({

@@ -1,15 +1,24 @@
   const pool = require('../config/db');
 
-  // get all product
   const getProducts = async (req, res) => {
     try {
       const result = await pool.query(
-        'SELECT * FROM products WHERE store_id = $1 ORDER BY created_at DESC',
+        `SELECT p.*,
+          COALESCE(
+            (SELECT AVG(sr.quantity)
+             FROM sales_records sr
+             WHERE sr.product_id = p.id
+             AND sr.sale_date >= NOW() - INTERVAL '30 days'),
+            0
+          ) AS avg_daily_sales
+         FROM products p
+         WHERE p.store_id = $1
+         ORDER BY p.created_at DESC`,
         [req.user.store_id]
       );
       res.json(result.rows);
-    } catch(err) {
-      res.status(500).json({message: err.message});
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
   };
 

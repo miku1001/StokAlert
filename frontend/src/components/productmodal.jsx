@@ -115,6 +115,59 @@ export function EditProductModal({ formData, onChange, onSubmit, onClose }) {
   );
 }
 
+export function SaleModal({ product, onSubmit, onClose }) {
+  return (
+    <div onClick={onClose} className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div onClick={(e) => e.stopPropagation()} className="bg-white border shadow-2xl rounded-xl p-6 w-[360px]">
+        <h3 className="text-lg font-semibold mb-4 text-black">
+          Log sale — {product?.name}
+        </h3>
+
+        <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          <div className="flex flex-col">
+            <label htmlFor="sale-qty" className="text-sm text-zinc-600 mb-1">Quantity sold</label>
+            <input
+              id="sale-qty"
+              type="number"
+              name="quantity"
+              placeholder="0"
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black placeholder-gray-500"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="sale-date" className="text-sm text-zinc-600 mb-1">Sale date</label>
+            <input
+              id="sale-date"
+              type="date"
+              name="sale_date"
+              defaultValue={new Date().toISOString().split('T')[0]}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black"
+              required
+            />
+          </div>
+
+          <div className="flex gap-2 mt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 text-sm py-2 rounded-lg border border-zinc-300 text-zinc-600 hover:bg-zinc-100 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 text-sm py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold transition"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function AddProductModal({ formData, onChange, onSubmit, onClose }) {
   return (
     <div onClick={onClose} className="fixed inset-0 bg-pink-200/30 flex items-center justify-center z-50">

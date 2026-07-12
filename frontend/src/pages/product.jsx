@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
-import AddProductModal, { DeleteConfirmModal, EditProductModal } from "@/components/productmodal";
+import AddProductModal, { DeleteConfirmModal, EditProductModal, SaleModal } from "@/components/productmodal";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -8,6 +8,8 @@ export default function Products() {
   const [showModal, setShowModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [editTarget, setEditTarget] = useState(null);
+  const [showSaleModal, setShowSaleModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [editFormData, setEditFormData] = useState({
   sku: '',
   name: '',
@@ -135,6 +137,29 @@ export default function Products() {
     }
   };
 
+  const handleSaleSubmit = async (e) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+
+    const res = await fetch('http://localhost:3000/sales', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: selectedProduct.id,
+        quantity: Number(form.get('quantity')),
+        sale_date: form.get('sale_date'),
+      }),
+    });
+
+    if (res.ok) {
+      setShowSaleModal(false);
+      window.location.reload();
+    } else {
+      const err = await res.json();
+      alert(err.message);
+    }
+  };
 
   return (
     <div className="h-full p-8 bg-zinc-100">
@@ -171,6 +196,9 @@ export default function Products() {
                   <th className="text-left px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider">
                     Unit Cost
                   </th>
+                  <th className="text-left px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider">
+                    Sales/day
+                  </th>
                   <th className="px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider text-center">
                     Status
                   </th>
@@ -202,6 +230,9 @@ export default function Products() {
                       <td className="px-6 py-4 text-base text-black bg-zinc-50">
                         {product.unit_cost}
                       </td>
+                      <td className="px-6 py-4 text-base text-black bg-zinc-50">
+                        ~{Number(product.avg_daily_sales).toFixed(1)}/day
+                      </td>
                       <td className="px-6 py-4 bg-zinc-50 text-center">
                         <div className="flex justify-center items-center gap-2">
                           {statusType === "critical" && (
@@ -223,6 +254,15 @@ export default function Products() {
                       </td>
                       <td className="px-6 py-4 bg-zinc-50 text-center">
                         <div className="flex gap-2 justify-center">
+                          <button
+                            onClick={() => {
+                              setSelectedProduct(product);
+                              setShowSaleModal(true);
+                            }}
+                            className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded transition"
+                          >
+                            Log Sale
+                          </button>
                           <button
                             onClick={() => setEditTarget(product)}
                             className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded transition"
@@ -272,6 +312,14 @@ export default function Products() {
             setDeleteTarget(null);
           }}
           onCancel={() => setDeleteTarget(null)}
+        />
+      )}
+
+      {showSaleModal && (
+        <SaleModal
+          product={selectedProduct}
+          onSubmit={handleSaleSubmit}
+          onClose={() => setShowSaleModal(false)}
         />
       )}
     </div>
