@@ -1,3 +1,120 @@
+export function DeleteConfirmModal({ product, onConfirm, onCancel }) {
+  return (
+    <div onClick={onCancel} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div onClick={(e) => e.stopPropagation()} className="bg-white border shadow-2xl rounded-xl p-6 w-96">
+        <h2 className="text-lg font-semibold mb-2 text-black">Delete Product</h2>
+        <p className="text-zinc-600 text-sm mb-6">
+          Are you sure you want to delete <span className="font-semibold text-black">{product?.name}</span>?
+          This action cannot be undone.
+        </p>
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 rounded-lg text-sm text-zinc-600 hover:bg-zinc-100 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EditProductModal({ formData, onChange, onSubmit, onClose }) {
+  return (
+    <div onClick={onClose} className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div onClick={(e) => e.stopPropagation()} className="bg-white border shadow-2xl rounded-xl p-6 w-150">
+        <h2 className="text-lg font-semibold mb-4 text-black">Edit Product</h2>
+        <form onSubmit={onSubmit} className="flex flex-col gap-3">
+          <div className="flex flex-col">
+            <label htmlFor="edit-sku" className="text-black">SKU</label>
+            <input
+              id="edit-sku"
+              name="sku"
+              placeholder="e.g. Coke-1L"
+              value={formData.sku}
+              onChange={onChange}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-zinc-900 placeholder-gray-500"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="edit-name" className="text-black">Product Name</label>
+            <input
+              id="edit-name"
+              name="name"
+              placeholder="Coke 1 Liter"
+              value={formData.name}
+              onChange={onChange}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black placeholder-gray-500"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="edit-current_stock" className="text-black">Current Stock</label>
+            <input
+              id="edit-current_stock"
+              name="current_stock"
+              type="number"
+              placeholder="Current stock"
+              value={formData.current_stock}
+              onChange={onChange}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black placeholder-gray-500"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="edit-reorder_point" className="text-black">Reorder Point (Minimum stock level before you need to reorder)</label>
+            <input
+              id="edit-reorder_point"
+              name="reorder_point"
+              type="number"
+              value={formData.reorder_point}
+              onChange={onChange}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black placeholder-gray-500"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="edit-unit_cost" className="text-black">Unit Cost</label>
+            <input
+              id="edit-unit_cost"
+              name="unit_cost"
+              type="number"
+              step="0.01"
+              placeholder="Unit cost"
+              value={formData.unit_cost}
+              onChange={onChange}
+              className="bg-zinc-100 border rounded-lg px-3 py-2 text-sm text-black placeholder-gray-500"
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg text-sm text-zinc-600 hover:bg-zinc-100 transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-400 text-white"
+            >
+              Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function AddProductModal({ formData, onChange, onSubmit, onClose }) {
   return (
     <div onClick={onClose} className="fixed inset-0 bg-pink-200/30 flex items-center justify-center z-50">

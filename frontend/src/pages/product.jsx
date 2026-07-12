@@ -1,11 +1,20 @@
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
-import AddProductModal from "@/components/productmodal";
+import AddProductModal, { DeleteConfirmModal, EditProductModal } from "@/components/productmodal";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [editTarget, setEditTarget] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+  sku: '',
+  name: '',
+  current_stock: 0,
+  reorder_point: 0,
+  unit_cost: 0
+  });
   const [formData, setFormData] = useState({
   sku: '',
   name: '',
@@ -32,6 +41,18 @@ export default function Products() {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    if (editTarget) {
+      setEditFormData({
+        sku: editTarget.sku || '',
+        name: editTarget.name || '',
+        current_stock: editTarget.current_stock || 0,
+        reorder_point: editTarget.reorder_point || 0,
+        unit_cost: editTarget.unit_cost || 0
+      });
+    }
+  }, [editTarget]);
+
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +62,34 @@ export default function Products() {
         ? parseFloat(value) || 0
         : value
     }));
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({
+      ...prev,
+      [name]: name.includes('stock') || name.includes('point') || name.includes('cost')
+        ? parseFloat(value) || 0
+        : value
+    }));
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:3000/products/${editTarget.id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editFormData)
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const result = await res.json();
+      setProducts(products.map(p => p.id === editTarget.id ? result.product : p));
+      setEditTarget(null);
+    } catch (err) {
+      console.error('Failed to update product:', err);
+    }
   };
 
   //fetch post method
@@ -69,7 +118,22 @@ export default function Products() {
     return 'watch';
   }
   return 'ok'; // Healthy
-};
+  };
+
+  const deleteProduct = async(id) => {
+    try{ 
+      const res = await fetch(`http://localhost:3000/products/${id}`,
+      { method: 'DELETE',
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const updated = products.filter(p => p.id !==id);
+      setProducts(updated);
+    }
+    catch(err){
+      console.error('Error Deleting data:', err);
+    }
+  };
 
 
   return (
@@ -94,7 +158,7 @@ export default function Products() {
           ) : (
             <table className="w-full">
               <thead className="border-b border-zinc-500">
-                <tr>
+                <tr className="">
                   <th className="text-left px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider">
                     Stock Keeping Unit
                   </th>
@@ -107,8 +171,11 @@ export default function Products() {
                   <th className="text-left px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider">
                     Unit Cost
                   </th>
-                  <th className="text-left px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider text-center">
                     Status
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-zinc-600 uppercase tracking-wider text-center">
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -135,22 +202,40 @@ export default function Products() {
                       <td className="px-6 py-4 text-base text-black bg-zinc-50">
                         {product.unit_cost}
                       </td>
-                      <td className="px-6 py-4 bg-zinc-50">
-                        {statusType === "critical" && (
-                          <div className="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition text-sm">
-                            Reorder now
-                          </div>
-                        )}
-                        {statusType === "watch" && (
-                          <button className="px-4 py-2 border-2 border-amber-500 text-amber-500 bg-amber-500/30 font-semibold rounded hover:bg-amber-500/50 transition text-sm">
-                            Watch
+                      <td className="px-6 py-4 bg-zinc-50 text-center">
+                        <div className="flex justify-center items-center gap-2">
+                          {statusType === "critical" && (
+                            <span className="px-4 py-2 border-2 border-red-900 bg-red-500 text-white font-semibold rounded text-sm">
+                              Reorder now
+                            </span>
+                          )}
+                          {statusType === "watch" && (
+                            <span className="px-4 py-2 border-2 border-amber-500 text-amber-500 bg-amber-500/30 font-semibold rounded text-sm">
+                              Watch
+                            </span>
+                          )}
+                          {statusType === "ok" && (
+                            <span className="px-4 py-2 text-green-800 border border-green-800 rounded-sm bg-green-500/50 font-medium text-sm">
+                              Healthy
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 bg-zinc-50 text-center">
+                        <div className="flex gap-2 justify-center">
+                          <button
+                            onClick={() => setEditTarget(product)}
+                            className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded transition"
+                          >
+                            Edit
                           </button>
-                        )}
-                        {statusType === "ok" && (
-                          <span className="px-4 py-2 text-green-800 border border-green-800 rounded-sm bg-green-500/50 font-medium text-sm">
-                            Healthy
-                          </span>
-                        )}
+                          <button
+                            onClick={() => setDeleteTarget(product)}
+                            className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded transition"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -167,6 +252,26 @@ export default function Products() {
           onChange={handleChange}
           onSubmit={handleSubmit}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {editTarget && (
+        <EditProductModal
+          formData={editFormData}
+          onChange={handleEditChange}
+          onSubmit={handleEditSubmit}
+          onClose={() => setEditTarget(null)}
+        />
+      )}
+
+      {deleteTarget && (
+        <DeleteConfirmModal
+          product={deleteTarget}
+          onConfirm={() => {
+            deleteProduct(deleteTarget.id);
+            setDeleteTarget(null);
+          }}
+          onCancel={() => setDeleteTarget(null)}
         />
       )}
     </div>
